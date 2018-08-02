@@ -1,16 +1,46 @@
+//Figure out how to exclude all keystrokes that aren't letters (jQuery?)
+//Figure out how to reset game once mystery word is completed
+//Figure out how to to alert users they've inputted a duplicate answer and make sure guess counter doesn't decrement.
+
 // Variables
 
-var biggie = ["T", "H", "E", "N", "O", "T", "O", "R", "I", "O", "U", "S", "B", "I", "G"];
+//Create array of possible answers
+var mysteryWords = 
+[
+    "BEATNUTS",
+    "BLACKALICIOUS",
+    "FUGEES",
+    "HEIROGLYPHICS",
+    "NWA",
+    "OUTKAST",
+    "FABOLOUS",
+    "LUDACRIS"
+]
+
+//Randomly choose word to be played and store as string
+var word = mysteryWords[Math.floor(Math.random() * mysteryWords.length)];
+
+//Create array containing word to be played.  One letter per element.
+var wordArray = word.split("");
+
+//Variable to track if pressed key is in word
 var correctGuess = 0;
+
+//Counter for number of guesses remaining
 var guesses = 10;
-var answerArray = [];
-answerArray.fill("_", 0,14);
+
+//Array to store guess letters that aren't in word
 var wrongLetters = [];
 
-answerArray = new Array(15);
-answerArray.fill("_", 0, 15);
+//Array to store characters from word as they are selected.
+var answerArray = [];
 
-document.getElementById("biggie").textContent = answerArray.join(" ");
+//Add _ in elements equal to length of word
+answerArray = new Array(wordArray.length);
+answerArray.fill("_", 0, wordArray.length);
+
+//Display word array with _ for each letter
+document.getElementById("word").textContent = answerArray.join(" ");
 
 //Game Code
 document.onkeyup = function(event)
@@ -18,11 +48,11 @@ document.onkeyup = function(event)
     var userInput = event.key.toUpperCase();
     console.log(userInput);
 
-    for(i=0; i < biggie.length; i++)
+    for(i=0; i < word.length; i++)
     {
-        if(userInput === biggie[i])
+        if(userInput === word[i])
         {
-            answerArray[i] = biggie[i];
+            answerArray[i] = word[i];
             correctGuess++;
         }       
     }
@@ -50,7 +80,7 @@ document.onkeyup = function(event)
         document.querySelector("#game").innerHTML = "<h1>Game Over</h1>";
     }
 
-    document.getElementById("biggie").textContent = answerArray.join(" ");
+    document.getElementById("word").textContent = answerArray.join(" ");
     document.getElementById("guesses").textContent = "Guesses Left: " + guesses; 
-    document.getElementById("wrongLetters").textContent = "Letters already guessed: " + wrongLetters.join(", ");  
+    document.getElementById("wrongLetters").textContent = "Letters Already Guessed: " + wrongLetters.join(", ");  
 }
