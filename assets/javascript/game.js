@@ -1,25 +1,23 @@
 /* Bugs
--Figure out how to exclude all keystrokes that aren't letters (jQuery?)
+-Figure out how to exclude all keystrokes that aren't letters.
 -Figure out how to to alert users they've inputted a duplicate answer and make sure guess counter doesn't decrement.
--Last letter isn't appearing before new word appears.
 */
 
 //Create array of possible answers
-var mysteryWords = 
-[
-    "BEATNUTS",
-    "BLACKALICIOUS",
-    "FUGEES",
-    "HEIROGLYPHICS",
-    "NWA",
-    "OUTKAST",
-    "FABOLOUS",
-    "LUDACRIS"
-]
+var mysteryWords =
+    [
+        "BEATNUTS",
+        "BLACKALICIOUS",
+        "FUGEES",
+        "HEIROGLYPHICS",
+        "NWA",
+        "OUTKAST",
+        "FABOLOUS",
+        "LUDACRIS"
+    ]
 
 //Create functino to run one round of game.
-function playGame ()
-{
+function playGame() {
     //Create random index of wordArray to use for mystery word.
     var wordIndex = Math.floor(Math.random() * mysteryWords.length);
 
@@ -46,7 +44,7 @@ function playGame ()
 
     //Counter for number of wins.
     var wins = 0;
-    
+
     //Add _ in elements equal to length of word.
     answerArray = new Array(wordArray.length);
     answerArray.fill("_", 0, wordArray.length);
@@ -55,20 +53,17 @@ function playGame ()
     document.getElementById("word").textContent = answerArray.join(" ");
 
     //Game Code
-    document.onkeyup = function(event)
-    {
+    document.onkeyup = function (event) {
         //Make user input uppercase to match mysteryWord array values.
         var userInput = event.key.toUpperCase();
         console.log(userInput);
 
         //Loop through mystery work to check if user inputted character exists in word and if so, add character to answerArray.  Increment correctGuess var if inputted character is in mystery word.
-        for(i=0; i < word.length; i++)
-        {
-            if(userInput === word[i])
-            {
+        for (i = 0; i < word.length; i++) {
+            if (userInput === word[i]) {
                 answerArray[i] = word[i];
                 correctGuess++;
-            }       
+            }
         }
 
         /* Attempt at notifying user if duplicate entry is inputted.  Not working.
@@ -83,8 +78,7 @@ function playGame ()
         }*/
 
         //If user inputted character is not in mystery word, add character to wrongLetters array. Then reset correctGuess var to 0 for next user input.
-        if(correctGuess == 0)
-        {
+        if (correctGuess == 0) {
             wrongLetters.push(userInput);
             guesses--;
         }
@@ -92,8 +86,7 @@ function playGame ()
         correctGuess = 0;
 
         //Alert user if they're out of guesses, update html, and start new round.
-        if(guesses === 0)
-        {
+        if (guesses === 0) {
             document.getElementById("word").textContent = answerArray.join(" ");
             document.getElementById("guesses").textContent = "Guesses Left: 10";
             document.getElementById("wrongLetters").textContent = "Letters Already Guessed:";
@@ -103,29 +96,32 @@ function playGame ()
 
         //Update html to display current status of answerArray, guesses left, and letters already guessed.
         document.getElementById("word").textContent = answerArray.join(" ");
-        document.getElementById("guesses").textContent = "Guesses Left: " + guesses; 
-        document.getElementById("wrongLetters").textContent = "Letters Already Guessed: " + wrongLetters.join(", ");  
+        document.getElementById("guesses").textContent = "Guesses Left: " + guesses;
+        document.getElementById("wrongLetters").textContent = "Letters Already Guessed: " + wrongLetters.join(", ");
 
         //Check to see if mystery word has been completed, alert user that they've won, increent wins counter and display in html, and reset "Letters Already Guessed" in html.
         var wordNotComplete = 0;
 
-        for(var j = 0; j < answerArray.length; j++)
-        {
-            if(answerArray[j] == "_")
-            {
+        for (var j = 0; j < answerArray.length; j++) {
+            if (answerArray[j] == "_") {
                 wordNotComplete = 1;
             }
         }
-    
-        if(wordNotComplete == 0)
-        {
+
+        if (wordNotComplete == 0) {
             wins++;
+            
             document.getElementById("word").textContent = answerArray.join(" ");
             document.getElementById("guesses").textContent = "Guesses Left: 10";
             document.getElementById("wins").textContent = "Wins: " + wins;
             document.getElementById("wrongLetters").textContent = "Letters Already Guessed:";
-            alert("You Win");
-            playGame();
+
+            setTimeout(() => {
+                alert("You Win");
+                playGame();
+            }, 250);
+            
+            
         }
     }
 }
